@@ -1,0 +1,231 @@
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <ctime>
+using namespace std;
+
+void makeNull(string& guessedLetters, int size) {
+	for (int i = 0; i < size; i++)
+		guessedLetters.push_back('_');
+}
+
+bool isLetterPresent(string word, char gl) {
+	for (int i = 0; i < word.size(); i++)
+		if (word[i] == gl)
+			return true;
+	return false;
+}
+
+bool isLetterUsed(string usedLetters, char letter) {
+	int j = 2;
+	for (int i = 0; i < usedLetters.size(); i++) {
+		if (usedLetters[i] == letter)
+			j++;
+		if (j >= 2)
+			return true;
+	}
+	return false;
+}
+
+std::string sort(string word, string& guessedLetters, int size) {
+	// assume there is an input
+	// word: karim    gl[] = mrk__
+	// output: k_r_m    '_'
+	string sortedWord;
+	makeNull(sortedWord, size);
+
+	for (int i = 0; i < guessedLetters.size(); i++) {
+		for (int j = 0; j < word.size(); j++) {
+			if (guessedLetters[i] == word[j]) {
+				sortedWord[j] = guessedLetters[i];
+			}
+		}
+	}
+	sortedWord[0] = toupper(sortedWord[0]);
+	return sortedWord;
+}
+void incrimentGuessedLetters(int& numOfGuessedLetters, char tempLetter, string randWord) {
+	for (int i = 0; i < randWord.size(); i++)
+		if (randWord[i] == tempLetter)
+			numOfGuessedLetters++;
+}
+
+void printUsedLetters(string usedLetters) {
+	cout << "Used letters: ";
+	for (int i = 0; i < usedLetters.size(); i++) {
+		cout << usedLetters[i] << " ";
+	}
+	cout << endl;
+}
+void hangman(int livesRemaining) {
+	cout << endl;
+	if (livesRemaining == 9) {
+		cout << "" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 8) {
+		cout << " _________" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 7) {
+		cout << " _________" << endl;
+		cout << "|        |" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 6) {
+		cout << " _________" << endl;
+		cout << "|        |" << endl;
+		cout << "|        O" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 5) {
+		cout << " _________" << endl;
+		cout << "|        |" << endl;
+		cout << "|        O" << endl;
+		cout << "|       /" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 4) {
+		cout << " _________" << endl;
+		cout << "|        |" << endl;
+		cout << "|        O" << endl;
+		cout << "|       /|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 3) {
+		cout << " _________" << endl;
+		cout << "|        |" << endl;
+		cout << "|        O" << endl;
+		cout << "|       /|\\" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 2) {
+		cout << " _________" << endl;
+		cout << "|        |" << endl;
+		cout << "|        O" << endl;
+		cout << "|       /|\\" << endl;
+		cout << "|        |" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 1) {
+		cout << " _________" << endl;
+		cout << "|        |" << endl;
+		cout << "|        O" << endl;
+		cout << "|       /|\\" << endl;
+		cout << "|        |" << endl;
+		cout << "|       /" << endl;
+		cout << "|" << endl;
+	}
+	if (livesRemaining == 0) {
+		cout << " _________" << endl;
+		cout << "|        |" << endl;
+		cout << "|        O" << endl;
+		cout << "|       /|\\" << endl;
+		cout << "|        |" << endl;
+		cout << "|       / \\" << endl;
+		cout << "|" << endl;
+
+	}
+
+}
+
+
+
+int main() {
+	srand(time(0));
+	vector <string> words = { "egypt", "america", "algeria", "afghanistan", "angola", "argentina", "armenia", "australia", "austria", "bahrain", "bangladesh", "belarus", "belgium", "bolivia", "brazil", "bosnia", "bulgaria", "cameroon", "canada", "chad", "chile", "china", "colomcia", "congo", "croatia", "cuba", "cyprus", "denmark", "dominica", "ecuador", "estonia", "ethiopia", "fiji", "finland", "france", "georgia", "germany", "ghana", "greece", "haiti", "honduras", "hungary", "india", "iceland", "iran", "iraq", "ireland", "italy", "jamaica", "japan", "jordan", "kenya", "korea", "kuwait", "latvia", "lebanon", "liberia", "libya", "luxembourg", "malaysia", "mali", "mexico", "mongolia", "morocco", "nepal", "netherlands", "niger", "nigeria", "norway", "oman", "pakistan", "palestine", "panama", "paraguay", "peru", "poland", "potugal", "qatar", "romania", "russia", "saudi", "senegal", "serbia", "sudan", "singapore", "sweden", "syria", "tunisia", "turkey", "emirates", "uruguay", "yemen" };
+
+	int sizeOfList = words.size();
+	int idxRand = rand() % sizeOfList;
+	string randWord = words[idxRand];
+	int letters = randWord.size();
+	int gl = 0;
+	string guessedLetters;
+	makeNull(guessedLetters, letters);
+	string sortedWord;
+	int livesRemaning = 9;
+	int numOfGuessedLetters = 0;
+	char tempLetter;
+	bool won = true;
+	string usedLetters;
+	sortedWord = sort(randWord, guessedLetters, letters);
+	hangman(livesRemaning);
+
+	while (true) {
+		if (numOfGuessedLetters == letters)
+			break;
+		if (livesRemaning == 0) {
+			won = false;
+			break;
+		}
+
+		cout << "Lives remaining: " << livesRemaning << endl;
+		for (int i = 0; i < sortedWord.size(); i++)
+			cout << sortedWord[i] << " ";
+		cout << endl;
+		cout << "Guess letter: ";
+		cin >> tempLetter;
+		usedLetters.push_back(tempLetter);
+
+		if (isLetterPresent(randWord, tempLetter)) {
+			guessedLetters[numOfGuessedLetters] = tempLetter;
+			incrimentGuessedLetters(numOfGuessedLetters, tempLetter, randWord);
+
+		}
+		else {
+			livesRemaning--;
+		}
+
+		sortedWord = sort(randWord, guessedLetters, letters);
+
+		system("CLS");
+		hangman(livesRemaning);
+		printUsedLetters(usedLetters);
+
+
+	}
+	if (won) {
+		cout << endl;
+		for (int i = 0; i < letters; i++) {
+			cout << sortedWord[i] << " ";
+		}
+		cout << endl; 
+		cout << "Congrats!! You won" << endl;
+	}
+	else {
+		cout << endl; 
+		for (int i = 0; i < letters; i++) {
+			cout << sortedWord[i] << " ";
+		}
+		cout << endl << endl;
+		cout << "You lost, better luck next time." << endl;
+  }
+  cout << "My Insta: kmvx_1" << endl; 
+
+  cout << endl; system("pause");
+}
