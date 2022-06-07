@@ -225,7 +225,5 @@ int main() {
 		cout << endl << endl;
 		cout << "You lost, better luck next time." << endl;
   }
-  cout << "My Insta: kmvx_1" << endl; 
-
   cout << endl; system("pause");
 }
